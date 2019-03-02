@@ -52,7 +52,7 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
     for sample, label in zip(x_train, y_train):
         sample_n += 1
 
-        if (sample_n % 1) == 0:
+        if (sample_n % 500) == 0:
             # prints status of the training
             time_taken = (time.time() - startTime) / 60
             clear_output()
