@@ -36,7 +36,7 @@ mnist = tf.keras.datasets.mnist
 # 30 neurons for the second hideen layer
 # 10 neurons for output (representing the numbers from 0 to 10)
 numInputs = 784
-neuronsEachLayer = [50, 30, 10]
+neuronsEachLayer = [27, 27, 27, 10]
 network = NeuralNetwork(numInputs, neuronsEachLayer)
 learning_rate = 0.001
 repeatTrainSamples = 14
