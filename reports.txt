@@ -15,3 +15,9 @@
 840000 samples | time 2003.1072572231292 minutes
 
 [784, 27, 27, 27, 10]
+60000 samples | time 37.82455503940582 minutes
+100000 samples | time 70.14256947835287 minutes
+200000 samples | time 154.20886264642078 minutes
+400000 samples | time 323.7763020515442 minutes
+600000 samples | time 489.59775478839873 minutes
+840000 samples | time 688.1068325082462 minutes
