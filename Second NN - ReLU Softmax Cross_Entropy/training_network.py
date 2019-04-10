@@ -15,11 +15,10 @@ def clear_output():
 
 # function that saves a given neural network object into a binary file
 def save_nn(filename, nn, time_taken, samples):
-
-    # builds a string responsible for logs into a text file reporting the time taken for train that amount of samples
+    # builds a string responsible for logging into a text file reporting the time taken for train that amount of samples
     stringReport = str(samples) + " samples | time " + str(time_taken) + " minutes\n"
 
-    with (open(filename, 'wb')) as openfile:  # saves the trained neural network
+    with (open(filename, 'wb')) as openfile:  # saves the trained nn
         pickle.dump(nn, openfile)
     with (open("reports.txt", 'a')) as openfile:  # saves the report string without overwriting, that's way we open it with the append (a) mode
         openfile.write(stringReport)
@@ -38,12 +37,10 @@ numInputs = 784
 neuronsEachLayer = [85, 10]
 network = NeuralNetwork(numInputs, neuronsEachLayer)
 learning_rate = 0.0001
-repeatTrainSamples = 2
-MAX_TRAINING_SAMPLES = 100000 #len(y_train) * repeatTrainSamples  # samples: 840.000
+repeatTrainSamples = 4
+MAX_TRAINING_SAMPLES = len(y_train) * repeatTrainSamples  # samples: 240.000
 
 sample_n = 0
-matches = 0
-total_loss = 0
 startTime = time.time()
 
 for i in range(repeatTrainSamples):  # iterates through the 60k train samples more than once
@@ -51,7 +48,7 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
     for sample, label in zip(x_train, y_train):
         sample_n += 1
 
-        if (sample_n % 500) == 0:
+        if (sample_n % 1000) == 0:
             # prints status of the training
             time_taken = (time.time() - startTime) / 60
             clear_output()
@@ -61,38 +58,34 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
             # saves intermidiate trained networks
             if sample_n == 10000:
                 save_nn("nn_10k.bin", network, time_taken, sample_n)
-
             elif sample_n == 20000:
                 save_nn("nn_20k.bin", network, time_taken, sample_n)
-
             elif sample_n == 50000:
                 save_nn("nn_50k.bin", network, time_taken, sample_n)
-
-            elif sample_n == 70000:
-                save_nn("nn_70k.bin", network, time_taken, sample_n)
-
             elif sample_n == 100000:
                 save_nn("nn_100k.bin", network, time_taken, sample_n)
+            elif sample_n == 240000:
+                save_nn("nn_240k.bin", network, time_taken, sample_n)
 
         sample = np.concatenate(sample)/255  # shapes the sample in the format of an array of 784 lenght also normalizing it
-        sample = np.array(sample, dtype=np.float64)  # avoids the possible overflow about to come with the exp function
+        #sample = np.array(sample, dtype=np.float64)  # avoids the possible overflow about to come with the exp function
 
         # convert the output to one hot encoded
         expected_output = np.zeros(10)
         expected_output[label] = 1
         network_output = network.feedForward(sample)  # computes network output
 
-        nn_guess = np.argmax(network_output)  # gets the index of the highest value in the array
-        if nn_guess == label:  # check if the network got a right
-            matches += 1
 
         # update weights and biases
         network.backpropagation(expected_output, network_output, learning_rate)
 
+        '''
+        Now we don't need this test because we are going to loop 4 times trough the entire training set
         # checks if it needs to continue the loop
         if sample_n == MAX_TRAINING_SAMPLES:
             time_taken = time.time() - startTime
             break
+        '''
 
 print("Time taken: ", time_taken)
 print("\n\n")
