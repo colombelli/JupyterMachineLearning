@@ -28,7 +28,7 @@ while (not os.path.exists(filename)):  # keeps asking for the file name if the g
 with open(filename,'rb') as openfile:  # after validating that the file exists in the directory, opens it in read mode
     network = pickle.load(openfile)
 
-
+"""
 # loads the dataset
 mnist = tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -63,3 +63,4 @@ for sample, label in zip(x_test, y_test):
 
 print("\nAverage loss: %f" %(total_loss / sample_num))
 print("Final hit rate: %.2f%%" % (matches / sample_num * 100))
+"""

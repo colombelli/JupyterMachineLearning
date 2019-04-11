@@ -5,6 +5,7 @@ import types  # used for adding the activation function to the neuron class with
 
 def _softmax(self, inp, maxZ, yExpSum):  # the softmax function which returns probabilities and has a better gradient stepness for very incorrect guesses
     self.output = np.exp(inp - maxZ) / yExpSum
+
     return self.output
 
 

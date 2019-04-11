@@ -13,13 +13,33 @@ def clear_output():
         _ = os.system('clear')
 
 
+class TypeFactory(object):
+    def __init__(self):
+        pass
+    @staticmethod
+    def create_type(name='DynamicType', dict={}):
+        return type(name, (object,), dict)
+    @staticmethod
+    def pickle(t, fh):
+        dict = t.__dict__.copy()
+        name = t.__name__
+        for key in dict.keys():
+            if key.startswith('__') and key.endswith('__'):
+                del dict[key]
+        pickle.dump((name, dict), fh)
+    @classmethod
+    def unpickle(cls, fh):
+        name, dict = pickle.load(fh)
+        return cls.create_type(name, dict)
+
+
 # function that saves a given neural network object into a binary file
 def save_nn(filename, nn, time_taken, samples):
     # builds a string responsible for logging into a text file reporting the time taken for train that amount of samples
     stringReport = str(samples) + " samples | time " + str(time_taken) + " minutes\n"
 
     with (open(filename, 'wb')) as openfile:  # saves the trained nn
-        pickle.dump(nn, openfile)
+        TypeFactory.pickle(nn, openfile)
     with (open("reports.txt", 'a')) as openfile:  # saves the report string without overwriting, that's way we open it with the append (a) mode
         openfile.write(stringReport)
 
@@ -56,7 +76,7 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
             print("%.2f minutes used" %time_taken)  # prints how much minutes were already used to train the nn
 
             # saves intermidiate trained networks
-            if sample_n == 10000:
+            if sample_n == 1000:
                 save_nn("nn_10k.bin", network, time_taken, sample_n)
             elif sample_n == 20000:
                 save_nn("nn_20k.bin", network, time_taken, sample_n)
