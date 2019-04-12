@@ -5,9 +5,7 @@ import types  # used for adding the activation function to the neuron class with
 
 def _softmax(self, inp, maxZ, yExpSum):  # the softmax function which returns probabilities and has a better gradient stepness for very incorrect guesses
     self.output = np.exp(inp - maxZ) / yExpSum
-
     return self.output
-
 
 def _ReLU(self, inp, maxZ, yExpSum):
     self.output = max(0, inp)
@@ -20,6 +18,15 @@ class Neuron:
         self.weights = weights
         self.bias = bias
         self.output = 0
+
+    # we need to dynamically instatiate the methods above to the activation_function
+    # because of some mysterious pickle serialization reasons, we need to declare those possible function substitutions here
+    def _ReLU(self, inp, maxZ, yExpSum):
+        self.output = max(0, inp)
+        return self.output
+    def _softmax(self, inp, maxZ, yExpSum):
+        self.output = np.exp(inp - maxZ) / yExpSum
+        return self.output
 
 
     def z(self, inputs):  # outputs the sum of every input times its respective weight and add a bias in the final result
@@ -61,11 +68,11 @@ class DenseLayer:
     def __init__(self, num_of_inputs, num_of_neurons, lastLayer):
         self.num_of_inputs = num_of_inputs
         self.neurons = []
-        self.lastLayer = lastLayer  # (true/false)
+        self.lastLayer = lastLayer  # true/false
 
         for i in range(num_of_neurons):  # creating the neurons for the layer
             weights = np.random.uniform(-0.3, 0.3, [num_of_inputs])
-            bias = np.random.uniform(0, 0.3)  # randomizing a bias
+            bias = np.random.uniform(0, 0.3)
             self.neurons.append(Neuron(weights, bias))
             # adding the right activation function method depending on the neuron layer:
             if lastLayer:

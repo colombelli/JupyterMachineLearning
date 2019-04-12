@@ -28,7 +28,7 @@ while (not os.path.exists(filename)):  # keeps asking for the file name if the g
 with open(filename,'rb') as openfile:  # after validating that the file exists in the directory, opens it in read mode
     network = pickle.load(openfile)
 
-"""
+
 # loads the dataset
 mnist = tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -46,12 +46,13 @@ for sample, label in zip(x_test, y_test):
     expected_output = np.zeros(10)
     expected_output[label] = 1
 
-    network_output = network.feedForward(sample)  # computes network output
-    loss = network.cross_entropy_cost_function(expected_output, network_output)  # computes loss
+    network_output = network.feedForward(sample)
+    loss = network.cross_entropy_cost_function(expected_output, network_output)
     total_loss += loss  # sums up the loss for calculating the final average loss
 
-    nn_guess = np.argmax(network_output)  # gets the index of the highest value in the array
-    if nn_guess == label:  # check if the network got a right guess
+    # checks if the network got a right guess
+    nn_guess = np.argmax(network_output)
+    if nn_guess == label:
         matches += 1
 
     if (sample_num % 100) == 0:  # prints parcial results from 100 to 100 tested samples
@@ -63,4 +64,3 @@ for sample, label in zip(x_test, y_test):
 
 print("\nAverage loss: %f" %(total_loss / sample_num))
 print("Final hit rate: %.2f%%" % (matches / sample_num * 100))
-"""

@@ -13,25 +13,6 @@ def clear_output():
         _ = os.system('clear')
 
 
-class TypeFactory(object):
-    def __init__(self):
-        pass
-    @staticmethod
-    def create_type(name='DynamicType', dict={}):
-        return type(name, (object,), dict)
-    @staticmethod
-    def pickle(t, fh):
-        dict = t.__dict__.copy()
-        name = t.__name__
-        for key in dict.keys():
-            if key.startswith('__') and key.endswith('__'):
-                del dict[key]
-        pickle.dump((name, dict), fh)
-    @classmethod
-    def unpickle(cls, fh):
-        name, dict = pickle.load(fh)
-        return cls.create_type(name, dict)
-
 
 # function that saves a given neural network object into a binary file
 def save_nn(filename, nn, time_taken, samples):
@@ -39,15 +20,15 @@ def save_nn(filename, nn, time_taken, samples):
     stringReport = str(samples) + " samples | time " + str(time_taken) + " minutes\n"
 
     with (open(filename, 'wb')) as openfile:  # saves the trained nn
-        TypeFactory.pickle(nn, openfile)
+        pickle.dump(nn, openfile)
     with (open("reports.txt", 'a')) as openfile:  # saves the report string without overwriting, that's way we open it with the append (a) mode
         openfile.write(stringReport)
+
 
 
 # loads the dataset
 mnist = tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
-
 
 # Training a network with the following structure
 # 784 neurons for input
@@ -56,27 +37,26 @@ mnist = tf.keras.datasets.mnist
 numInputs = 784
 neuronsEachLayer = [85, 10]
 network = NeuralNetwork(numInputs, neuronsEachLayer)
-learning_rate = 0.0001
+learning_rate = 0.01
 repeatTrainSamples = 4
 MAX_TRAINING_SAMPLES = len(y_train) * repeatTrainSamples  # samples: 240.000
-
 sample_n = 0
 startTime = time.time()
+
 
 for i in range(repeatTrainSamples):  # iterates through the 60k train samples more than once
 
     for sample, label in zip(x_train, y_train):
         sample_n += 1
 
-        if (sample_n % 1000) == 0:
-            # prints status of the training
+        if (sample_n % 100) == 0:  # prints status of the training
             time_taken = (time.time() - startTime) / 60
             clear_output()
             print("%d samples out of %d" %(sample_n, MAX_TRAINING_SAMPLES))
-            print("%.2f minutes used" %time_taken)  # prints how much minutes were already used to train the nn
+            print("%.2f minutes used" %time_taken)
 
             # saves intermidiate trained networks
-            if sample_n == 1000:
+            if sample_n == 10000:
                 save_nn("nn_10k.bin", network, time_taken, sample_n)
             elif sample_n == 20000:
                 save_nn("nn_20k.bin", network, time_taken, sample_n)
@@ -88,15 +68,13 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
                 save_nn("nn_240k.bin", network, time_taken, sample_n)
 
         sample = np.concatenate(sample)/255  # shapes the sample in the format of an array of 784 lenght also normalizing it
-        #sample = np.array(sample, dtype=np.float64)  # avoids the possible overflow about to come with the exp function
+        sample = np.array(sample, dtype=np.float64)  # avoids the possible overflow about to come with the exp function
 
         # convert the output to one hot encoded
         expected_output = np.zeros(10)
         expected_output[label] = 1
+
         network_output = network.feedForward(sample)  # computes network output
-
-
-        # update weights and biases
         network.backpropagation(expected_output, network_output, learning_rate)
 
         '''
