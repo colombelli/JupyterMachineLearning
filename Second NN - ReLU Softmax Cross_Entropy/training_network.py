@@ -38,8 +38,8 @@ numInputs = 784
 neuronsEachLayer = [85, 10]
 network = NeuralNetwork(numInputs, neuronsEachLayer)
 learning_rate = 0.01
-repeatTrainSamples = 4
-MAX_TRAINING_SAMPLES = len(y_train) * repeatTrainSamples  # samples: 240.000
+repeatTrainSamples = 1
+MAX_TRAINING_SAMPLES = 50000 #len(y_train) * repeatTrainSamples  # samples: 240.000
 sample_n = 0
 startTime = time.time()
 
@@ -49,23 +49,22 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
     for sample, label in zip(x_train, y_train):
         sample_n += 1
 
-        if (sample_n % 100) == 0:  # prints status of the training
+        if (sample_n % 1000) == 0:  # prints status of the training
             time_taken = (time.time() - startTime) / 60
             clear_output()
             print("%d samples out of %d" %(sample_n, MAX_TRAINING_SAMPLES))
             print("%.2f minutes used" %time_taken)
 
             # saves intermidiate trained networks
-            if sample_n == 10000:
+            if sample_n == 1000:
+                save_nn("nn_1k.bin", network, time_taken, sample_n)
+            elif sample_n == 5000:
+                save_nn("nn_5k.bin", network, time_taken, sample_n)
+            elif sample_n == 10000:
                 save_nn("nn_10k.bin", network, time_taken, sample_n)
-            elif sample_n == 20000:
-                save_nn("nn_20k.bin", network, time_taken, sample_n)
             elif sample_n == 50000:
                 save_nn("nn_50k.bin", network, time_taken, sample_n)
-            elif sample_n == 100000:
-                save_nn("nn_100k.bin", network, time_taken, sample_n)
-            elif sample_n == 240000:
-                save_nn("nn_240k.bin", network, time_taken, sample_n)
+                break
 
         sample = np.concatenate(sample)/255  # shapes the sample in the format of an array of 784 lenght also normalizing it
         sample = np.array(sample, dtype=np.float64)  # avoids the possible overflow about to come with the exp function

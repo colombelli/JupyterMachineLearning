@@ -1,6 +1,0 @@
-
-50 samples | time 0.10148958365122478 minutes
-50 samples | time 0.09917978843053182 minutes
-1000 samples | time 1.9046886086463928 minutes
-300 samples | time 0.560666032632192 minutes
-1000 samples | time 1.8319786310195922 minutes

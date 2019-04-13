@@ -18,6 +18,7 @@ class Neuron:
         self.weights = weights
         self.bias = bias
         self.output = 0
+        self.thresholding = 1  # for the gradient clipping
 
     # we need to dynamically instatiate the methods above to the activation_function
     # because of some mysterious pickle serialization reasons, we need to declare those possible function substitutions here
@@ -49,14 +50,20 @@ class Neuron:
 
     def dEdw(self, inputs, dEdz):  # dEdw = dzdw * dydz * dEdy = dzdw * dEdz     , where dz(i)dw is simply the i input
         dEdw = []
-        for i, w in enumerate(self.weights):
+        for i in range(len(self.weights)):
             dEdw.append(inputs[i] * dEdz)
         return dEdw
 
 
     def updateWeights(self, learningRate, dEdw):
-        for i in range(len(self.weights)):
-            self.weights[i] -= learningRate * dEdw[i]
+        norm = np.linalg.norm(dEdw)
+        if (norm > self.thresholding):
+            clipped = self.thresholding / norm
+            for i in range(len(self.weights)):  # then do the gradient clipping
+                self.weights[i] -= learningRate * clipped * dEdw[i]
+        else:
+            for i in range(len(self.weights)):  # normal weight update
+                self.weights[i] -= learningRate * dEdw[i]      
 
 
     def updateBias(self, learningRate, dEdz):
@@ -69,11 +76,12 @@ class DenseLayer:
         self.num_of_inputs = num_of_inputs
         self.neurons = []
         self.lastLayer = lastLayer  # true/false
-
-        for i in range(num_of_neurons):  # creating the neurons for the layer
-            weights = np.random.uniform(-0.3, 0.3, [num_of_inputs])
-            bias = np.random.uniform(0, 0.3)
-            self.neurons.append(Neuron(weights, bias))
+        # for more on the above inicialization: 
+        # https://medium.com/usf-msds/deep-learning-best-practices-1-weight-initialization-14e5c0295b94
+        weights = np.random.randn(num_of_inputs-1, num_of_inputs) * np.sqrt(2/(num_of_inputs-1)) 
+        bias = 0
+        for i in range(num_of_neurons):  # creating the neurons for the layer           
+            self.neurons.append(Neuron(weights[i], bias))
             # adding the right activation function method depending on the neuron layer:
             if lastLayer:
                 self.neurons[i].activation_function = types.MethodType(
@@ -89,7 +97,6 @@ class DenseLayer:
         zArray = []
         yExpSum = 0
         maxZ = 0
-        teste = False
         for neuron in self.neurons:  # calculates z values
             zArray.append(neuron.z(inputs))
 
