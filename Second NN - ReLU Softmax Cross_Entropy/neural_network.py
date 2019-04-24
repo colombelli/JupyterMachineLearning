@@ -78,7 +78,7 @@ class DenseLayer:
         self.lastLayer = lastLayer  # true/false
         # for more on the above inicialization: 
         # https://medium.com/usf-msds/deep-learning-best-practices-1-weight-initialization-14e5c0295b94
-        weights = np.random.randn(num_of_inputs-1, num_of_inputs) * np.sqrt(2/(num_of_inputs-1)) 
+        weights = np.random.randn(num_of_inputs, num_of_inputs) * np.sqrt(2/(num_of_inputs-1)) 
         bias = 0
         for i in range(num_of_neurons):  # creating the neurons for the layer           
             self.neurons.append(Neuron(weights[i], bias))

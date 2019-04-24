@@ -1,0 +1,35 @@
+[784, 85, 10] LR = 0.01
+1000 samples | time 1.9458738247553506 minutes
+5000 samples | time 12.056940396626791 minutes
+10000 samples | time 25.1831094344457 minutes
+50000 samples | time 134.41635094086328 minutes
+
+[784, 50, 30, 10] LR = 0.001
+10000 samples | time 11.771670985221864 minutes
+20000 samples | time 26.586728966236116 minutes
+50000 samples | time 71.0781490723292 minutes
+100000 samples | time 145.66564709742863 minutes
+160000 samples | time 235.45189312696456 minutes
+240000 samples | time 355.2492524703344 minutes
+300000 samples | time 445.0304596424103 minutes
+
+[784, 27, 27, 27, 10] LR = 0.001
+10000 samples | time 6.8148592988650005 minutes
+20000 samples | time 15.256307586034138 minutes
+50000 samples | time 41.02343757947286 minutes
+100000 samples | time 83.26879760424296 minutes
+160000 samples | time 134.22189274231593 minutes
+
+[784, 27, 27, 27, 10] LR = 0.0001
+10000 samples | time 6.990111486117045 minutes
+20000 samples | time 15.725038417180379 minutes
+50000 samples | time 41.499542287985484 minutes
+100000 samples | time 83.95168921947479 minutes
+160000 samples | time 134.8559000611305 minutes
+240000 samples | time 203.185485124588 minutes
+300000 samples | time 256.1456111987432 minutes
+350000 samples | time 290.1008934656779 minutes
+400000 samples | time 331.5079994559288 minutes
+480000 samples | time 397.1394390741984 minutes
+
+[784, 50, 30, 10] LR = 0.0001

@@ -1,0 +1,1 @@
+The weights are being initialized in a way that works but is not exactly right. It wouldn't change anything in terms of results, but it would very slightly increase performance. Anyways, I think it's nice to write about it in case of confusion; one could get confused because of the non-used randomized weights.
