@@ -14,11 +14,12 @@
 300000 samples | time 445.0304596424103 minutes
 
 [784, 27, 27, 27, 10] LR = 0.001
-10000 samples | time 6.8148592988650005 minutes
-20000 samples | time 15.256307586034138 minutes
-50000 samples | time 41.02343757947286 minutes
-100000 samples | time 83.26879760424296 minutes
-160000 samples | time 134.22189274231593 minutes
+10000 samples | time taken: 00:06:59
+50000 samples | time taken: 00:42:42
+100000 samples | time taken: 01:28:17
+200000 samples | time taken: 02:57:47
+300000 samples | time taken: 04:24:28
+420000 samples | time taken: 06:08:17
 
 [784, 27, 27, 27, 10] LR = 0.0001
 10000 samples | time 6.990111486117045 minutes
@@ -33,3 +34,16 @@
 480000 samples | time 397.1394390741984 minutes
 
 [784, 50, 30, 10] LR = 0.0001
+50000 samples | time taken: 01:00:40
+100000 samples | time taken: 02:19:14
+160000 samples | time taken: 03:49:25
+240000 samples | time taken: 05:58:19
+300000 samples | time taken: 07:26:57
+
+[784, 85, 10] LR = 0.001
+10000 samples | time taken: 00:18:33
+20000 samples | time taken: 00:42:22
+50000 samples | time taken: 01:54:22
+100000 samples | time taken: 03:55:30
+200000 samples | time taken: 07:58:24
+300000 samples | time taken: 12:07:41

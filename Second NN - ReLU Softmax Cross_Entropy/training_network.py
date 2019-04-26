@@ -42,13 +42,14 @@ mnist = tf.keras.datasets.mnist
 
 # Training a network with the following structure
 # 784 neurons for input
-# 50 neurons for the first hidden layer
-# 30 neurons for the second hidden layer
+# 27 neurons for the first hidden layer
+# 27 neurons for the second hidden layer
+# 27 neurons for the third hidden layer
 # 10 neurons for output (representing the numbers from 0 to 9)
 numInputs = 784
-neuronsEachLayer = [50, 30, 10]
+neuronsEachLayer = [27, 27, 27, 10]
 network = NeuralNetwork(numInputs, neuronsEachLayer)
-learning_rate = 0.0001
+learning_rate = 0.001
 init_reports(numInputs, neuronsEachLayer, learning_rate)
 
 repeatTrainSamples = 7
@@ -69,20 +70,18 @@ for i in range(repeatTrainSamples):  # iterates through the 60k train samples mo
             print("Time taken: ", time_taken)
 
             # saves intermidiate trained networks
-            if sample_n == 50000:
+            if sample_n == 10000:
+                save_nn("nn_10k.bin", network, time_taken, sample_n)
+            elif sample_n == 50000:
                 save_nn("nn_50k.bin", network, time_taken, sample_n)
             elif sample_n == 100000:
                 save_nn("nn_100k.bin", network, time_taken, sample_n)
-            elif sample_n == 160000:
-                save_nn("nn_160k.bin", network, time_taken, sample_n)
-            elif sample_n == 240000:
-                save_nn("nn_240k.bin", network, time_taken, sample_n)
+            elif sample_n == 200000:
+                save_nn("nn_200k.bin", network, time_taken, sample_n)
             elif sample_n == 300000:
                 save_nn("nn_300k.bin", network, time_taken, sample_n)
-            elif sample_n == 360000:
-                save_nn("nn_360k.bin", network, time_taken, sample_n)	
             elif sample_n == 420000:
-                save_nn("nn_420k.bin", network, time_taken, sample_n)
+                save_nn("nn_420k.bin", network, time_taken, sample_n)				
 
 
         sample = np.concatenate(sample)/255  # shapes the sample in the format of an array of 784 lenght also normalizing it

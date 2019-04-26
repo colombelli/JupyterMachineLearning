@@ -64,3 +64,4 @@ for sample, label in zip(x_test, y_test):
 
 print("\nAverage loss: %f" %(total_loss / sample_num))
 print("Final hit rate: %.2f%%" % (matches / sample_num * 100))
+print("\nDesign trained: ", filename)
